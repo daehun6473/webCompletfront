@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import * as XLSX from 'xlsx';
 
@@ -124,6 +124,14 @@ const downloadExcel = () => {
     XLSX.writeFile(workbook, '도서목록.xlsx');
 }
 
+onMounted(() => {
+    store.dispatch(
+        'search_', {
+            bookNm: ''
+        }
+    )
+})
+
 </script>
 
 <style scoped>
@@ -150,7 +158,7 @@ th,td{
 
 .selectBook:hover{
     cursor:pointer;
-    background:#f5f5f5;
+    background:#d6d0d0;
 }
 
 .available{
