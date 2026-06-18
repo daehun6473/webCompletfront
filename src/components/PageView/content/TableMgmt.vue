@@ -1,11 +1,14 @@
 <template>
 
 <div class="container">
-
+    <div style="display: flex; flex-direction: row-reverse;">
+        <button @click="downloadExcel">엑셀 다운로드</button>
+    </div>
     <table>
 
         <thead>
             <tr>
+                <th>No.</th>
                 <th>도서번호</th>
                 <th>도서명</th>
                 <th>저자</th>
@@ -19,17 +22,18 @@
         <tbody>
 
             <tr v-if="books.length === 0">
-                <td colspan="7">
+                <td colspan="8">
                     조회된 데이터가 없습니다.
                 </td>
             </tr>
 
             <tr
-                v-for="book in books"
+                v-for="(book, index) in books"
                 :key="book.bookNo"
                 class="selectBook"
                 @click="getBookDetail(book.bookNo)"
             >
+                <td>{{ index + 1 }}</td>
                 <td>{{ book.bookNo }}</td>
                 <td>{{ book.title }}</td>
                 <td>{{ book.author }}</td>
@@ -52,6 +56,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
+import * as XLSX from 'xlsx';
 
 const store = useStore()
 
@@ -98,6 +103,25 @@ const getBookDetail = async(bookNo) =>{
             bookNo: bookNo
         }
     )
+}
+
+const downloadExcel = () => {
+    const excelData = books.value.map((book, index) => ({
+        No: index + 1,
+        도서번호: book.bookNo,
+        도서명: book.title,
+        저자: book.author,
+        출판사: book.publisher,
+        발행년도: book.pubDate,
+        자료구분: convertType(book.dataType),
+        상태: convertState(book.state)
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(excelData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook,worksheet,'도서목록');
+
+    XLSX.writeFile(workbook, '도서목록.xlsx');
 }
 
 </script>

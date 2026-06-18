@@ -28,6 +28,28 @@ export default {
             console.error('[insertBook api error]', error)
             throw error
         })
-}
+    },
+    deleteBook(params){
+        return client
+        .post('/deleteBook', params)
+        .then(response =>
+            response.data
+        )
+        .catch(error => {
+            console.error('[deleteBook api error]', error)
+            throw error
+        })
+    },
+    updateBook(params){
+        return client
+        .post('/updateBook', params)
+        .then(response =>
+            response.data
+        )
+        .catch(error => {
+            console.error('[updateBook api error]', error)
+            throw error
+        })
+    }
 
 }

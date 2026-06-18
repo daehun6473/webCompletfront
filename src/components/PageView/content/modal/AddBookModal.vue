@@ -3,7 +3,7 @@
 
         <div class="modal-content">
 
-            <h2>도서 상세정보</h2>
+            <h2>자료 등록</h2>
             <table>
                 <tbody>
                     <tr>
@@ -61,7 +61,10 @@
                         <th>소장 상태</th>
                         <td>
                             <select v-model="book.state">
-                                <option v-for="state in bookState" :key="state.value" :value="state.value">
+                                <option 
+                                    v-for="state in bookState"
+                                    :key="state.value" 
+                                    :value="state.value">
                                     {{ state.label }}
                                 </option>
                             </select>
@@ -206,14 +209,19 @@ const convertState = (state) => {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: auto;
 }
 
 .modal-content {
     padding: 1%;
     width: 90%;
-    height: 95%;
+    max-width: 1400px;
+    max-height: 95vh;
     background-color: white;
     border: 1px solid black;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
 }
 
 .modal {
@@ -257,5 +265,12 @@ button {
 .borrowed {
     color: red;
     font-weight: bold;
+}
+
+input,
+select {
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
 }
 </style>

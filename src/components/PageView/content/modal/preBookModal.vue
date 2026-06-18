@@ -44,66 +44,19 @@
                             <select v-model="editData.state">
                                 <option value="B">대출가능</option>
                                 <option value="C">대출중</option>
-                                <option value="L">분실</option>
-                                <option value="D">훼손</option>
-                                <option value="S">폐기</option>
                             </select>
                         </td>
                     </tr>
                 </tbody>
             </table>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>기관번호</th>
-                        <th>별치기호</th>
-                        <th>분류기호</th>
-                        <th>도서기호</th>
-                        <th>권책기호</th>
-                        <th>가격</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <td>
-                            <input class="inputBar" v-model="editData.libNo">
-                        </td>
-
-                        <td>
-                            <input class="inputBar" v-model="editData.posi">
-                        </td>
-
-                        <td>
-                            <input class="inputBar" v-model="editData.clas">
-                        </td>
-
-                        <td>
-                            <input class="inputBar" v-model="editData.auth">
-                        </td>
-
-                        <td>
-                            <input class="inputBar" v-model="editData.vol">
-                        </td>
-
-                        <td>
-                            <input class="inputBar" v-model="editData.price">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-
+        
             <div class="btnArea">
-                <button style="background-color: #00bfff; border: 1px solid #00bfff;" @click="updateBook">
-                    자료 수정
-                </button>
+                <!-- <button style="background-color: #00bfff; border: 1px solid #00bfff;" @click="updateBook">
+                    자료 찾기
+                </button> -->
                 <button @click="closeModal">
                     닫기
-                </button>
-                <button style="background-color: red; border: 1px solid red;" @click="deleteBook">
-                    자료 삭제
                 </button>
             </div>
 
@@ -119,7 +72,7 @@ import { useStore } from 'vuex';
 const store = useStore();
 
 const isOpen = computed(() =>
-    store.state.modal.isOpen
+    store.state.preModal.isOpen
 )
 
 const detail = computed(() =>
@@ -137,7 +90,7 @@ watch(detail, (newVal) => {
 const closeModal = () => {
 
     store.dispatch('setState_', {
-        key: 'modal',
+        key: 'preModal',
         value: {
             isOpen: false
         }
@@ -179,10 +132,7 @@ const convertState = (state) => {
 
     const stateMap = {
         'B': '대출가능',
-        'C': '대출중',
-        'L': '분실',
-        'D': '훼손',
-        'S': '폐기'
+        'C': '대출중'
     }
 
     return stateMap[state] || state

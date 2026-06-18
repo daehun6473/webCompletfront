@@ -17,6 +17,10 @@ const defaultState = {
 
     AddModal: {
         isOpen: false
+    },
+
+    preModal: {
+        isOpen: false
     }
 
 };

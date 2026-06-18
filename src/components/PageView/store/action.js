@@ -10,41 +10,26 @@ export default{
     resetState_({commit}){
         commit(types.RESET_STATE);
     },
-    // search_({commit, rootState}, {...params}){
-    //     commit(types.RESET_RESULT_LIST);
-    //     return api
-    //             .search({params})
-    //             .then(res => {
-    //                 const {header, body} = res;
-    //                 const {code} = header;
+    search_({commit}, {...params}) {
 
-    //                 if(code === 0){
-    //                     commit(types.SET_STATE, {
-    //                         key: 'resultData',
-    //                         value: {
-    //                             mainData: body.mainData || []
-    //                         }
-    //                     })
-    //                 }
-    //             })
-    // }
-search_({commit}, {...params}) {
+        commit(types.RESET_RESULT_LIST);
+        console.log(params);
+        
+        return api
+            .search({params})
+            .then(res => {
+                console.log(res);
+                
+                commit(types.SET_STATE,{
+                    key:'resultData',
+                    value:{
+                        mainData: res.books || [],
+                        totalCount: res.totalCount
+                    }
+                })
 
-    commit(types.RESET_RESULT_LIST);
-
-    return api
-        .search({params})
-        .then(res => {
-
-            commit(types.SET_STATE,{
-                key:'resultData',
-                value:{
-                    mainData: res || []
-                }
             })
-
-        })
-},
+    },
 
     searchBookDetail_({commit}, {...params}){
         commit(types.RESET_RESULT_LIST);
@@ -86,6 +71,61 @@ search_({commit}, {...params}) {
                 .catch(error => {
                     console.error('[error]', error);
                     alert('자료 등록 실패 입니다.')
+
+                    throw error;
+                })
+        
+    },
+
+    delete_({commit, dispatch}, {...params}){
+        console.log({params});
+
+        return api
+                .deleteBook(params)
+                .then(() => {
+                    alert('자료가 삭제 되었습니다.')
+
+                    commit(types.SET_STATE, {
+                        key: 'modal',
+                        value: {
+                            isOpen: false
+                        }
+                    })
+
+                    dispatch('search_', {
+                        bookNm: ''
+                    })
+                })
+                .catch(error => {
+                    console.error('[error]', error);
+                    alert('자료 삭제 실패 입니다.')
+
+                    throw error;
+                })
+        
+    },
+    update_({commit, dispatch}, {...params}){
+        console.log({params});
+
+        return api
+                .updateBook(params)
+                .then(() => {
+                    alert('자료가 수정 되었습니다.')
+
+                    commit(types.SET_STATE, {
+                        key: 'modal',
+                        value: {
+                            isOpen: false
+                        }
+                    })
+
+                    dispatch('search_', {
+                        bookNm: ''
+                    })
+                })
+                .catch(error => {
+                    console.error('[error]', error);
+                    alert('자료 수정 실패 입니다.')
 
                     throw error;
                 })
